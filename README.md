@@ -45,6 +45,7 @@ import "reflect-metadata";
 
 import { Gateway, HTTPServiceFramework, ActorNode, AttributeNode, ActionNode, OperateType, TypeNode, ParameterNode, LoggerLevel } from "@qinsteam/net-core";
 import { Pack } from "./pack";
+import { deserializePack, serializePack } from "./serialize";
 
 Gateway.config.net.framework = {
   service: { type: HTTPServiceFramework.Empty },
@@ -56,11 +57,11 @@ class User {
   id: string = "";
   @AttributeNode({ name: "name" })
   name: string = "";
-  @AttributeNode({ name: "email" })
+  @AttributeNode({ name: "email", type: TypeNode(String) })
   email: string = "";
   @AttributeNode({ name: "password" })
   password: string = "";
-  @AttributeNode({ name: "packages", type: { type: [],name: "Pack[]",serialize: 
+  @AttributeNode({ name: "packages", type: { type: [],name: "Pack[]",serialize: serializePack, deserialize: deserializePack } })
   packages: Pack[] = [];
 
   @ActionNode({
@@ -135,7 +136,6 @@ export async function main() {
     console.error("Error:", error);
   }
 }
-Gateway.config.log.level = LoggerLevel.Debug;
 main();
 ```
 
@@ -144,7 +144,7 @@ main();
 ```typescript
 import "reflect-metadata";
 
-import { Gateway, HTTPServiceFramework, ActorNode, ActionNode, OperateType, VoidType, TypeNode, ParameterNode, AttributeNode } from "@qinsteam/net-core";
+import { Gateway, HTTPServiceFramework, ActorNode, AttributeNode, ActionNode, OperateType, VoidType, TypeNode, ParameterNode } from "@qinsteam/net-core";
 import { Pack } from "./pack";
 import { deserializePack, serializePack } from "./serialize";
 
@@ -154,9 +154,13 @@ Gateway.config.net.framework = {
 Gateway.config.net.endpoint = "http://localhost:8080";
 @ActorNode()
 class User {
+  @AttributeNode({ name: "id" })
   id: string = "";
+  @AttributeNode({ name: "name" })
   name: string = "";
+  @AttributeNode({ name: "email", type: TypeNode(String) })
   email: string = "";
+  @AttributeNode({ name: "password" })
   password: string = "";
   @AttributeNode({ name: "packages", type: { type: [],name: "Pack[]",serialize: serializePack, deserialize: deserializePack } })
   packages: Pack[] = [];
@@ -165,15 +169,15 @@ class User {
     pact: {
       request: {
         actor: {
-          id: OperateType.Local,
-          password: OperateType.Local,
+          id: [OperateType.Local],
+          password: [OperateType.Local],
         }
       },
       response: {
         actor: {
-          name: OperateType.Local,
-          email: OperateType.Local,
-          password: OperateType.Local,
+          name: [OperateType.Local],
+          email: [OperateType.Local],
+          password: [OperateType.Local],
         }
       }
     },
@@ -196,17 +200,17 @@ class User {
         actor: {},
         parameters: {
           pack: {
-            id: OperateType.Local,
+            id: [OperateType.Local],
           },
         },
       },
       response: {
         actor: {
-          packages: OperateType.Local,
+          packages: [OperateType.Local],
         },
         result: {
-          name: OperateType.Local,
-          version: OperateType.Local,
+          name: [OperateType.Local],
+          version: [OperateType.Local],
         },
       },
     },

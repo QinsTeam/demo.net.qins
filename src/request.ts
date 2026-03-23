@@ -2,6 +2,7 @@ import "reflect-metadata";
 
 import { Gateway, HTTPServiceFramework, ActorNode, AttributeNode, ActionNode, OperateType, TypeNode, ParameterNode, LoggerLevel } from "@qinsteam/net-core";
 import { Pack } from "./pack";
+import { deserializePack, serializePack } from "./serialize";
 
 Gateway.config.net.framework = {
   service: { type: HTTPServiceFramework.Empty },
@@ -13,11 +14,11 @@ class User {
   id: string = "";
   @AttributeNode({ name: "name" })
   name: string = "";
-  @AttributeNode({ name: "email" })
+  @AttributeNode({ name: "email", type: TypeNode(String) })
   email: string = "";
   @AttributeNode({ name: "password" })
   password: string = "";
-  @AttributeNode({ name: "packages" })
+  @AttributeNode({ name: "packages", type: { type: [],name: "Pack[]",serialize: serializePack, deserialize: deserializePack } })
   packages: Pack[] = [];
 
   @ActionNode({
@@ -92,5 +93,4 @@ export async function main() {
     console.error("Error:", error);
   }
 }
-Gateway.config.log.level = LoggerLevel.Debug;
 main();

@@ -2,6 +2,7 @@ import "reflect-metadata";
 
 import { Gateway, HTTPServiceFramework, ActorNode, AttributeNode, ActionNode, OperateType, VoidType, TypeNode, ParameterNode } from "@qinsteam/net-core";
 import { Pack } from "./pack";
+import { deserializePack, serializePack } from "./serialize";
 
 Gateway.config.net.framework = {
   service: { type: HTTPServiceFramework.Express },
@@ -13,11 +14,11 @@ class User {
   id: string = "";
   @AttributeNode({ name: "name" })
   name: string = "";
-  @AttributeNode({ name: "email" })
+  @AttributeNode({ name: "email", type: TypeNode(String) })
   email: string = "";
   @AttributeNode({ name: "password" })
   password: string = "";
-  @AttributeNode({ name: "packages" })
+  @AttributeNode({ name: "packages", type: { type: [],name: "Pack[]",serialize: serializePack, deserialize: deserializePack } })
   packages: Pack[] = [];
 
   @ActionNode({
