@@ -1,33 +1,38 @@
 import "reflect-metadata";
 
-import { Gateway, HTTPServiceFramework, ActorNode, ActionNode, OperateType, VoidType, TypeNode, ParameterNode } from "@qinsteam/net-core";
+import { Gateway, HTTPServiceFramework, ActorNode, AttributeNode, ActionNode, OperateType, VoidType, TypeNode, ParameterNode } from "@qinsteam/net-core";
 import { Pack } from "./pack";
 
-Gateway.Config.net.framework = {
+Gateway.config.net.framework = {
   service: { type: HTTPServiceFramework.Express },
 };
-Gateway.Config.net.endpoint = "http://localhost:8080";
+Gateway.config.net.endpoint = "http://localhost:8080";
 @ActorNode()
 class User {
+  @AttributeNode({ name: "id" })
   id: string = "";
+  @AttributeNode({ name: "name" })
   name: string = "";
+  @AttributeNode({ name: "email" })
   email: string = "";
+  @AttributeNode({ name: "password" })
   password: string = "";
+  @AttributeNode({ name: "packages" })
   packages: Pack[] = [];
 
   @ActionNode({
     pact: {
       request: {
         actor: {
-          id: OperateType.Local,
-          password: OperateType.Local,
+          id: [OperateType.Local],
+          password: [OperateType.Local],
         }
       },
       response: {
         actor: {
-          name: OperateType.Local,
-          email: OperateType.Local,
-          password: OperateType.Local,
+          name: [OperateType.Local],
+          email: [OperateType.Local],
+          password: [OperateType.Local],
         }
       }
     },
@@ -50,17 +55,17 @@ class User {
         actor: {},
         parameters: {
           pack: {
-            id: OperateType.Local,
+            id: [OperateType.Local],
           },
         },
       },
       response: {
         actor: {
-          packages: OperateType.Local,
+          packages: [OperateType.Local],
         },
         result: {
-          name: OperateType.Local,
-          version: OperateType.Local,
+          name: [OperateType.Local],
+          version: [OperateType.Local],
         },
       },
     },
