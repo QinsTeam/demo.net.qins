@@ -1,0 +1,32 @@
+{
+  "name": "net-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "index.d.ts"
+  ],
+  "main": "./dist/main.cjs",
+  "module": "./dist/main.js",
+  "types": "./index.d.ts",
+  "exports": {
+    "types": "./index.d.ts",
+    "import": "./dist/main.js",
+    "require": "./dist/main.umd.cjs"
+  },
+  "scripts": {
+    "dev": "vite-node main.ts",
+    "build": "tsc && vite build",
+    "request-node": "vite-node src/request.ts",
+    "service-node": "vite-node src/service.ts"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "@qinsteam/net-core": "^0.2.6",
+    "vite-node": "^6.0.0"
+  }
+}
