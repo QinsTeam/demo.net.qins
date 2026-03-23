@@ -60,7 +60,7 @@ class User {
   email: string = "";
   @AttributeNode({ name: "password" })
   password: string = "";
-  @AttributeNode({ name: "packages" })
+  @AttributeNode({ name: "packages", type: { type: [],name: "Pack[]",serialize: 
   packages: Pack[] = [];
 
   @ActionNode({
