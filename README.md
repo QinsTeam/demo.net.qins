@@ -4,8 +4,6 @@
 
 # 安装
 ```bash
-npm install @qinsteam/net-core --registry=https://npm.pkg.github.com
-
 npm install
 ```
 
